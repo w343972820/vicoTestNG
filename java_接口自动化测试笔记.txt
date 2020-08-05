@@ -1,0 +1,249 @@
+==========================================理论==============================================================================================
+1 展示层:TestNG+ExtentReport ---->Jenkins:可以让代码自动跑起来(持续集成工具)
+2 逻辑控制层:HttpClient+TestNG
+3 持久层:MyBatis+Mysql  --------->Mock(模拟接口,可以用mock好的接口给前端人员用)/Jenkins
+
+为什么要做接口测试
+1 更容易实现持续集成 
+2 自动化测试落地性价比更高,比UI更稳定
+3 大型系统更多多复杂,系统间模块越来越多
+4 bug更容易定位
+5 降低研发成本,提高效率
+
+自动化测试是怎么做(落地过程)
+需求阶段->项目立项->产品设计->需求文档
+研发阶段->UI设计->前端开发->后端开发->测试设计->测试开发 (全并行)
+测试阶段->环境搭建->多项测试执行->bug修复->测试报告(经过几轮测试,耗费了多少时间,发现了那些问题等)
+项目上线->线上回归测试->上线报告->添加监控 (性能监控,接口存活监控)
+
+接口测试的范围
+1 功能测试方法:等价类划分法/边界值分析/错误推断/困果图法/判定表驱动法/正交试验法/功能图法/场景法
+2 异常测试:1 数据异常(null,"",数据类型)  2 环境异常(负载均衡架构,冷热备份)
+3 性能测试(狭义):负载测试,压力测试或强度测试,并发测试,稳定性测试或可靠性测试
+
+自动化接口测试范围
+功能测试+数据异常测试
+
+环境异常该怎么测试 (通过日志来分析)
+
+手工接口测试的常用工具
+1 postman(chrome插件)
+2 httprequest(firefox插件)
+3 fiddler(具备抓包和发送请求功能)
+4 半自动化:jmeter(结果统计方面不完善)
+
+自动化框架的设计(mvc框架模式)
+显示层 -> 测试报告
+控制层 -> 逻辑验证
+持久层 -> 测试用例存储(数据驱动)
+
+==========================================================git笔记================================================================================
+git学习
+1 安装git客户端
+linux:yum install -y git
+windows:https://git-scm.com/downloads
+Mac:brew install git
+检查安装是否成功:git --version
+2 配置sshkey(相当于绑定邮箱,配置好后多台电脑使用)
+a.生成key:ssh-keygen -t rsa -C "邮箱地址"
+b.cd ~/.ssh(用户目录下的.ssh文件夹)
+c.复制id_rsa.pub的公钥内容到github中(setings->ssh and GPG keys->New SSH key)
+2.1 配置多个sshkey
+在./ssh目录下vim config在config内配置以下四条(User为github用户名,IdentityFile为.ssh目录下的id_rsa文件),如其它人需要同步git,将id_rsa替换成已配置的
+Host github.com
+HostName github.com
+User w343972820
+IdentityFile /c/Users/Administrator/.ssh/id_rsa
+
+3 git的使用
+a 在指定的目录git clone git@github.com:w343972820/qswkAutoTest.git(该自已项目上的github链接) 
+b cd qswkAutoTest(进入到git下的该项目),如在该项止下新建一个txt文件想推送到git上
+c git status(查看仓库本地文件状态如有末提交的文件,会提示使用git add <file>命令追踪进仓库)
+d git add test.txt (添加末提交的文件)  git add . (添加所有修改内容)
+e git status (查看下还有没有末提交的文件)
+f git commit -m "增加测试文件"  (添加本次提交描述)
+g git push (推送至github上) 
+f git pull (如果其它人想要更新本地文件则使用该命令拉取)
+
+3.1 分支操作
+a git branch (查看本地分支)
+b git branch -a (查看远程仓库分支)
+c git checkout -b branch1 (本地建立一个分支,如果远程没有该分支,可以写完代码后直接add/commit/push进去,看提示会告诉你怎么弄)
+d git checkout master  (切换分支,这里是切到master分支)
+e git branch -d branch1 (删除本地分支)
+f git branch -r -d origin/branch1  (删除远程分支,远程删除需要配合push使用)  git push origin :branch1  (注意origin后面必需得有一个空格)
+g git reset --hard HEAD^  (本地回退到上一版本,后面多加^,表示多回退一个版本)
+h git reflog  (查看历史版本,可找出版本号,可使用指定版本号回退至指定版本)
+i git reset --hard f850b24  (根据版本号回退到指定的这个版本)
+j git merge branch   (合并分支,然后git push 推送到github)
+
+=================================================maven打包===========================================================================
+pom.xml项目文件内添加,mainClass配置main入口文件,然后上Maven Projects项package打包就行
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.course.testng.suite.TestJar</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+===================================================testNG==============================================================================
+1 添加testng依赖包
+<dependency>
+    <groupId>org.testng</groupId>
+    <artifactId>testng</artifactId>
+    <version>7.0.0-beta7</version>
+    <scope>compile</scope>
+</dependency>
+
+2 注解学习
+2.1 @Test 测试用例
+2.2 @BeforeMethod   测试方法运行前运行
+2.3 @AfterMethod    测试方法运行后运行
+2.4 @BeforeClass    测试类运行前运行
+2.5 @AfterClass     测试类运行后运行
+2.6 @BeforeSuite    测试套件前运行  (套件测试一般配合xml应用，如单独写个有测试套件类，在xml内与其它测试类一起运行，则套件类before或after分别只运行一次)
+2.7 @AfterSuite     测试套件后运行
+2.8 @Test(dependsOnMethods = {"test1"})     依赖测试－〉测试方法1运行后在运行
+2.9 @Test(expectedExceptions = RuntimeException.class)  一个runtimeException异常测试，如果测试用例中会抛出这个异常则用例通过
+2.10 @Test(enabled = false)   (运行时忽略该条用例,默认不写的是true)
+2.11 @Test(timeOut = 3000)    (设置超出时间为3秒，运行超过则测试不通过)
+2.12 xml参数化用例
+    @Test
+    @Parameters({"name","age"})
+    public void parameTest1(String name,int age)
+xml内设置（以下会运行两次用例）：
+    <class name="com.course.testng.paramter.ParamterTest">
+                <parameter name="name" value="zhangsan" />
+                <parameter name="age" value="10" />
+    </class>
+2.13 分发参数化用例
+1>   @Test(dataProvider = "data")
+    public void testDataProvider(String name,int age)
+    @DataProvider(name="data")
+    public Object[][] providerData(){
+        Object[][] o= new Object[][]{
+                {"zhangsan",10},
+                {"lisi",20},
+                {"wangwu",30}
+        };
+        return o;
+    }
+
+2>  按不同用例设置不能参数
+    @DataProvider(name ="methodData")
+    public Object[][] methodDataTest(Method method){
+        Object[][] o=null;
+        if (method.getName().equals("test1")){
+            o=new Object[][]{
+                    {"zhangsan",20},
+                    {"lisi",25}
+            };
+        }else if(method.getName().equals("test2")){
+            o=new Object[][]{
+                    {"wangwu",50},
+                    {"zhaojie",55}
+            };
+        }
+        return o;
+    }
+2.14 注解多线程用例,下面为启动3个线程池，运行10次
+@Test(invocationCount = 10,threadPoolSize = 3)
+2.15 xml多线程用例
+<suite name="multithead" parallel="tests" thread-count="3">
+    <!--
+    tests级别：test tag下的用例可以在不同的线程下执行,相同的test tag下的用例只能在同一个线程中去执行(同一个test在同一个线程)
+    methods级别：所有用例都可以在不同的线程下去执行
+    classes级别:相同的class tag下的用例在同一个线程中执行
+    thread-count:代表了最大并发线程数
+    xml文件配置这种方式不能指定线程池，只有方法上才可以指定线程池
+    -->
+2.16 分组测试(可按方法分组与类分组),以下为类分组，只运行某个组的类
+   <test name="onlyRunStu">
+        <groups>
+            <run>
+                <include name="stu" />
+            </run>
+        </groups>
+        <classes>
+            <class name="com.course.testng.groups.GroupsClass1" />
+            <class name="com.course.testng.groups.GroupsClass2" />
+            <class name="com.course.testng.groups.GroupsClass3" />
+        </classes>
+    </test>
+
+=========================================testng-extentsreport========================================================
+一、添加依赖
+<dependencies>
+        <dependency>
+            <groupId>com.relevantcodes</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>2.41.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vimalselvam</groupId>
+            <artifactId>testng-extentsreport</artifactId>
+            <version>1.3.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>3.0.6</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+二、导入自用的监听类ExtentTestNGIReporterListener
+三、测试报告中添加测试步骤
+ Reporter.log("测试登录");
+ Reporter.log("输入账号：qwe123");
+ Reporter.log("输入密码：123456");
+ Assert.assertEquals("aaa","aaa");
+四、xml配置
+ <test name="这些是测试模块">
+        <classes>
+            <class name="com.tester.extend.demo.TestMethodsDemo">
+                <methods>
+                    <include name="test1" />
+                    <include name="test2" />
+                    <include name="test3" />
+                    <include name="logDemo" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <!--添回extentreports测试报告监听器-->
+    <listeners>
+        <!--<listener class-name="com.vimalselvam.testng.listener.ExtentTestNgFormatter" />-->
+        <listener class-name="com.tester.extend.demo.ExtentTestNGIReporterListener" />
+    </listeners>
+
+
+
+
+
+
+
+
