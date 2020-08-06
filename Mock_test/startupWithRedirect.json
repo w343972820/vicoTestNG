@@ -1,0 +1,31 @@
+[
+  {
+    "description":"重定向到百度,访问该接口会跳至百度",
+    "request":{
+      "uri":"/redirect"
+    },
+    "redirectTo":"http://www.baidu.com"
+  },
+  {
+    "description":"重定向自己的接口",
+    "request":{
+      "uri":"/rediecttoower",
+      "method":"get"
+    },
+    "redirectTo":"/rediecttest"
+  },
+  {
+    "description":"被重定义测试接口",
+    "request":{
+      "uri":"/rediecttest",
+      "method":"get"
+    },
+    "response":{
+      "headers":{
+        "Content-Type":"text/html;charset=gbk"
+      },
+      "text":"被重定义的地方...."
+    }
+  }
+
+]

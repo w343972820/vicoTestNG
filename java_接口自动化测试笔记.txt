@@ -240,7 +240,28 @@ xml内设置（以下会运行两次用例）：
         <listener class-name="com.tester.extend.demo.ExtentTestNGIReporterListener" />
     </listeners>
 
-
+==============================================mock(模拟接口)====================================================
+一、介绍：mock是通过jar运行文件，java -jar mock包 来使用，配置文件为json
+二、mockjar包下载:https://repo1.maven.org/maven2/com/github/dreamhead/moco-runner/0.11.0/moco-runner-0.11.0-standalone.jar
+三、运行方式
+java -jar ./moco-runner-0.11.0-standalone.jar http -p 6587 -c startup1.json
+四、json格式,响应得加headers否则响应中文会出现乱码
+[
+  {
+    "description":"模拟一个没有参数的get请求",
+    "request":{
+      "uri":"/getdemo",
+      "method":"get"
+    },
+    "response":{
+      "headers":{
+        "Content-Type":"text/html;charset=gbk"
+      },
+      "text":"这是一个没有参数的get请求"
+    }
+  }
+]
+五、以上例子访问路径为：127.0.0.1:6587/getdemo
 
 
 
