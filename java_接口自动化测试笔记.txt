@@ -76,6 +76,7 @@ g git reset --hard HEAD^  (本地回退到上一版本,后面多加^,表示多回退一个版本)
 h git reflog  (查看历史版本,可找出版本号,可使用指定版本号回退至指定版本)
 i git reset --hard f850b24  (根据版本号回退到指定的这个版本)
 j git merge branch   (合并分支,然后git push 推送到github)
+k git stash -a   (删除本地所有更改)
 
 =================================================maven打包===========================================================================
 pom.xml项目文件内添加,mainClass配置main入口文件,然后上Maven Projects项package打包就行
