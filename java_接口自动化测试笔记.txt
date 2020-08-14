@@ -78,7 +78,7 @@ i git reset --hard f850b24  (¸ù¾İ°æ±¾ºÅ»ØÍËµ½Ö¸¶¨µÄÕâ¸ö°æ±¾)
 j git merge branch   (ºÏ²¢·ÖÖ§,È»ºógit push ÍÆËÍµ½github)
 k git stash -a   (É¾³ı±¾µØËùÓĞ¸ü¸Ä)
 
-=================================================maven´ò°ü===========================================================================
+=================================================maven´òjar°ü1===========================================================================
 pom.xmlÏîÄ¿ÎÄ¼şÄÚÌí¼Ó,mainClassÅäÖÃmainÈë¿ÚÎÄ¼ş,È»ºóÉÏMaven ProjectsÏîpackage´ò°ü¾ÍĞĞ
     <build>
         <plugins>
@@ -104,6 +104,62 @@ pom.xmlÏîÄ¿ÎÄ¼şÄÚÌí¼Ó,mainClassÅäÖÃmainÈë¿ÚÎÄ¼ş,È»ºóÉÏMaven ProjectsÏîpackage´ò°
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+===============================================maven´òtestng_jar°ü====================================================================
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.7.1</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>
+                            ./src/main/resources/testng.xml
+                        </suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+===============================================maven´òSpring_boot°ü============================================================
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.vico.Application</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                    <compilerArguments>
+                        <extdirs>${project.basedir}/lib</extdirs>
+                    </compilerArguments>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -263,6 +319,46 @@ java -jar ./moco-runner-0.11.0-standalone.jar http -p 6587 -c startup1.json
   }
 ]
 Îå¡¢ÒÔÉÏÀı×Ó·ÃÎÊÂ·¾¶Îª£º127.0.0.1:6587/getdemo
+
+==============================================httpĞ­ÒéÀí½â===================================================
+Ò»/ÇëÇóÍ·ĞÅÏ¢
+1 Accept:Õâ¸öÍ·±íÊ¾,ä¯ÀÀÆ÷¸æËß·şÎñÆ÷ËüËùÖ§³ÖµÄÊı¾İÀàĞÍ
+2 Accept-Charset:Õâ¸öÍ·±íÊ¾,ä¯ÀÀÆ÷¸æËß·şÎñÆ÷Ëü²ÉÓÃµÄ×Ö·û¼¯(×Ö·û±àÂë)
+3 Accept-Encoding:Õâ¸öÍ·±íÊ¾,ä¯ÀÀÆ÷¸æËß·şÎñÆ÷ËüËùÖ§³ÖµÄÑ¹Ëõ¸ñÊ½
+4 Accept-Language:Õâ¸öÍ·±íÊ¾,ä¯ÀÀÆ÷¸æËß·şÎñÆ÷ËüËù²ÉÓÃµÄÓïÑÔ
+5 Host:Õâ¸öÍ·±íÊ¾,ä¯ÀÀÆ÷¸æËß·şÎñÆ÷ÎÒÏë·ÃÎÊ·şÎñÆ÷ÄÄÌ¨Ö÷»ú
+6 If-Modified-Since:Õâ¸öÍ·±íÊ¾,ä¯ÀÀÆ÷¸æËß·şÎñÆ÷Ëü»º´æÊı¾İÊ±¼äÊÇ¶àÉÙ
+7 Referer:Õâ¸öÍ·±íÊ¾,ä¯ÀÀÆ÷¸æËß·şÎñÆ÷ÎÒÊÇ´ÓÄÄ¸öÍøÒ³µã¹ıÀ´µÄ(·ÀµÁÁ´)
+8 User_Agent:Õâ¸öÍ·±íÊ¾,ä¯ÀÀÆ÷¸æËß·şÎñÆ÷ÎÒËùÊ¹ÓÃµÄä¯ÀÀÆ÷ÀàĞÍ/°æ±¾µÈĞÅÏ¢
+9 Date:Õâ¸öÍ·±íÊ¾,ä¯ÀÀÆ÷¸æËß·şÎñÆ÷ÎÒÊ²Ã´Ê±¼ä·ÃÎÊµÄ
+10 Connection:keep-alive (Õâ¸ö±íÊ¾³¤Á´½Ó)Á¬½Ó·½Ê½
+11 X-Requested-With:XMLhttpRequest (Õâ¸ö±íÊ¾Òì²½ÇëÇó) Í¬²½Òì²½ÇëÇó
+
+¶ş/ÏìÓ¦Í·
+1 Locatiuon:Õâ¸öÍ·¸æËßä¯ÀÀÆ÷ÄãÈ¥ÕÒË­,ÅäºÏ302×´Ì¬ÂëÊ¹ÓÃ
+2 Server:Õâ¸öÍ·¸æËßä¯ÀÀÆ÷·şÎñÆ÷µÄÀàĞÍ
+3 Content-Encoding:Õâ¸öÍ·¸æËßä¯ÀÀÆ÷»ØËÍµÄÊı¾İ²ÉÓÃµÄÑ¹Ëõ¸ñÊ½
+4 Content-Type:Õâ¸öÍ·¸æËßä¯ÀÀÆ÷»ØËÍµÄÊı¾İÀàĞÍ
+5 Last-Modified:Õâ¸öÍ·¸æËßä¯ÀÀÆ÷Êı¾İµÄ×îºóĞŞ¸ÄÊ±¼ä
+6 Refresh:Õâ¸öÍ·ÓÃÓÚ¿ØÖÆä¯ÀÀÆ÷¶¨Ê±Ë¢ĞÂ
+7 Content-Disposition:Õâ¸öÍ·¸æËßä¯ÀÀÆ÷ĞèÒªÒÔÏÂÔØ·½Ê½´ò¿ª»ØËÍµÄÊı¾İ
+8 Transfer-Encoding:Õâ¸öÍ·¸æËßä¯ÀÀÆ÷Êı¾İÊÇÒÔ·Ö¿éĞÎÊ½»ØËÍµÄ
+
+CookiesÓëSession
+Çø±ğ:
+1 cookieÔÚ¿Í»§¶ËµÄÍ·ĞÅÏ¢ÖĞ
+2 sessionÔÚ·şÎñ¶Ë´æ´¢,ÎÄ¼ş/Êı¾İ¿âµÈ¶¼¿ÉÒÔ
+3 Ò»°ãÀ´ËµsessionµÄÑéÖ¤ĞèÒªcookie´øÒ»¸ö×Ö¶ÎÀ´±íÊ¾Õâ¸öÓÃ»§ÊÇÄÄÒ»¸ösession,ËùÒÔµ±¿Í»§½ûÓÃcookieÊ±,session½«Ê§Ğ§
+
+cookieµÄ×Ü½á(cookieÊÇ×Ô¶¨ÒåµÄÏûÏ¢,¸ñÊ½:key:value,ÖµÓÉ·şÎñ¶ËÉú³É,¿Í»§¶Ë±£´æ ):
+
+
+
+
+
+
+
+
 
 
 
